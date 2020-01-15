@@ -57,6 +57,16 @@ export default class NewsFeedStore extends Store {
     }
   }
 
+  @action setFakedNewsfeed = () => {
+    if (this.pollingNewsIntervalId) {
+      clearInterval(this.pollingNewsIntervalId);
+      this.pollingNewsIntervalId = null;
+    }
+    const rawNews = require('../config/news.dummy.json');
+    this.rawNews = get(rawNews, 'items', []);
+    this.newsUpdatedAt = get(rawNews, 'updatedAt', null);
+  };
+
   @action getNews = async () => {
     let rawNews;
     try {
